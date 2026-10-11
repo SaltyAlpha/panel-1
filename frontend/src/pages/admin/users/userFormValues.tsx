@@ -63,7 +63,7 @@ export function useUserFormFields({
       label: t('common.table.columns.username', {}),
       description: t('common.form.rule.username', {}),
       required: true,
-      props: ignorePasswordManagerProps,
+      props: { ...ignorePasswordManagerProps, inputWrapperOrder: ['label', 'input', 'description', 'error'] },
     },
     {
       type: 'text',
