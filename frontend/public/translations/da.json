@@ -3574,8 +3574,7 @@
                 "titleUpdate": "Opdater egg-konfiguration",
                 "form": {
                   "order": "Rækkefølge",
-                  "eggsPlaceholder": "Vælg eggs",
-                  "eggsEmpty": "Der er ingen eggs konfigureret. Opret et nest og et egg, før du opretter en egg-konfiguration."
+                  "eggsPlaceholder": "Vælg eggs"
                 },
                 "enum": {
                   "deploymentType": {
@@ -4121,7 +4120,6 @@
                   "matcherType": "Matcher-type",
                   "scopesDescription": "OAuth-scopes, der alle skal være tildelt, for at denne matcher matcher.",
                   "path": "Feltsti",
-                  "pathDescription": "Stien, der bruges til at udtrække det sammenlignede felt fra svaret fra Info-URL'en (https://serdejsonpath.live).",
                   "equals": "Er lig med",
                   "contains": "Indeholder",
                   "startsWith": "Starter med",
