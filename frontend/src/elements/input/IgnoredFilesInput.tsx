@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Input, Text } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import debounce from 'debounce';
+import picomatch from 'picomatch';
 import { ReactNode, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import searchFiles from '@/api/server/files/searchFiles.ts';
+import statFiles from '@/api/server/files/statFiles.ts';
 import Button from '@/elements/buttons/Button.tsx';
 import Spinner from '@/elements/feedback/Spinner.tsx';
 import IgnoredFilesBrowser from '@/elements/files/IgnoredFilesBrowser.tsx';
@@ -38,8 +40,7 @@ function unanchoredExceptions(patterns: string[]): string[] {
 
 function includeGlobs(pattern: string): string[] {
   const base = pattern.replace(/\/+$/, '') || pattern;
-  const subtree = base.includes('/') ? base : `**/${base}`;
-  return [pattern, `${subtree}/**`];
+  return [pattern, `${base}/**`];
 }
 
 function MatchIndicator({ serverUuid, pattern, enabled }: { serverUuid: string; pattern: string; enabled: boolean }) {
@@ -49,6 +50,14 @@ function MatchIndicator({ serverUuid, pattern, enabled }: { serverUuid: string; 
   const { data, isFetching } = useQuery({
     queryKey: queryKeys.server(serverUuid).files.ignoreMatches(pattern),
     queryFn: async () => {
+      if (!picomatch.scan(pattern).isGlob && !pattern.includes('\\')) {
+        const path = pattern.replace(/^\/+|\/+$/g, '');
+        if (!path) return [];
+
+        const entries = await statFiles(serverUuid, '/', [path]);
+        return pattern.endsWith('/') ? entries.filter((entry) => entry.directory) : entries;
+      }
+
       const { entries } = await searchFiles(serverUuid, {
         root: '/',
         pathFilter: { include: includeGlobs(pattern), exclude: [], caseInsensitive: false },
