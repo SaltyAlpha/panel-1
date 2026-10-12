@@ -38,7 +38,8 @@ function unanchoredExceptions(patterns: string[]): string[] {
 
 function includeGlobs(pattern: string): string[] {
   const base = pattern.replace(/\/+$/, '') || pattern;
-  return [pattern, `${base}/**`];
+  const subtree = base.includes('/') ? base : `**/${base}`;
+  return [pattern, `${subtree}/**`];
 }
 
 function MatchIndicator({ serverUuid, pattern, enabled }: { serverUuid: string; pattern: string; enabled: boolean }) {

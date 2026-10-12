@@ -139,10 +139,10 @@ const baseTranslations = defineTranslations({
           inUse: 'In Use',
         },
         ignoredFilesInput: {
-          onePatternPerLine: 'One pattern per line.',
+          onePatternPerLine: 'One pattern per line. Match counts include files only.',
           countMatches: 'Count Matches',
-          matches: '{count} matched',
-          noMatches: 'No matches',
+          matches: '{count} files matched',
+          noMatches: 'No files matched',
           exception: 'Exception',
           tooManyPatterns: 'Matching is not counted automatically for more than {max} patterns.',
           unanchoredException:
